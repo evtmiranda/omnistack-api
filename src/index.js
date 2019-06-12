@@ -1,9 +1,10 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const path = require('path')
+import express from 'express';
+import path from 'path';
+import cors from 'cors';
+import { port } from './config/constants';
+import mongoose from 'mongoose'
+import { authenticate } from './middlewares/authentication'
 const app = express()
-const cors = require('cors')
-const constants = require('./config/constants')
 
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
@@ -17,11 +18,13 @@ app.use((req, _res, next) => {
     next()
 })
 
+app.use((req, res, next) => authenticate(req, res, next))
+
 app.use(cors())
 
 app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads', 'resized')))
 
-app.use('/api', require('./routes'))
+app.use('/api', require('./routes').default)
 
-server.listen(constants.port)
+server.listen(port, () => { console.log(`The server is running on the port ${port}`) })
 

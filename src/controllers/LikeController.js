@@ -1,15 +1,13 @@
-const Post = require('../model/Post')
+import Post from '../model/Post'
 
-module.exports = {
-    async store(req, res){
-        const post = await Post.findById(req.params.id)
+export const store = async (req, res) => {
+    const post = await Post.findById(req.params.id)
 
-        post.likes++
+    post.likes++
 
-        await post.save()
+    await post.save()
 
-        req.io.emit('like', post);
+    req.io.emit('like', post);
 
-        res.json({ success: true, post})
-    }
+    res.json({ success: true, post })
 }

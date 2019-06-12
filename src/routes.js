@@ -1,15 +1,15 @@
-const express = require('express')
-const multer = require('multer')
-const uploadConfig = require('./config/upload')
-const PostController = require('./controllers/PostController')
-const LikeController = require('./controllers/LikeController')
+import { Router } from 'express';
+import multer from 'multer';
+import uploadConfig from './config/upload';
+import { store, index } from './controllers/PostController';
+import { store as storeLike } from './controllers/LikeController';
 
-const routes = new express.Router()
+const routes = new Router()
 const upload = multer(uploadConfig);
 
-routes.post('/posts', upload.single('image'), PostController.store)
-routes.get('/posts', PostController.index)
+routes.post('/posts', upload.single('image'), store)
+routes.get('/posts', index)
 
-routes.post('/posts/:id/like', LikeController.store)
+routes.post('/posts/:id/like', storeLike)
 
-module.exports = routes;
+export default routes;

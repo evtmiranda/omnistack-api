@@ -1,7 +1,7 @@
 const multer = require('multer')
 const path = require('path')
 
-module.exports = {
+export default {
     storage: new multer.diskStorage({
         destination: path.resolve(__dirname, '..', '..', 'uploads'),
         filename: (_req, file, cb) => {
